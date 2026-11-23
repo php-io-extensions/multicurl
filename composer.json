@@ -1,9 +1,9 @@
 {
-    "name": "php-io-extensions/pcurl",
+    "name": "php-io-extensions/multicurl",
     "type": "php-ext",
     "description": "libcurl's multi socket API bound 1:1 into PHP on top of ext-curl handles",
     "license": "MIT",
-    "version": "0.11.0",
+    "version": "0.11.1",
     "authors": [
         {
             "name": "Project Saturn Studios, LLC",
@@ -11,16 +11,15 @@
         }
     ],
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.4",
         "ext-curl": "*"
     },
     "require-dev": {
         "pestphp/pest": "^4.0"
     },
     "php-ext": {
-        "extension-name": "pcurl",
+        "extension-name": "multicurl",
         "priority": 40,
-        "build-path": "ext",
         "support-zts": true,
         "support-nts": true,
         "os-families-exclude": [
@@ -28,8 +27,8 @@
         ],
         "configure-options": [
             {
-                "name": "enable-pcurl",
-                "description": "Enable the pcurl extension",
+                "name": "enable-multicurl",
+                "description": "Enable the multicurl extension",
                 "needs-value": false
             }
         ]

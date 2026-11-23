@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Pcurl\Multi;
+use Multicurl\Multi;
 
 it('rejects anything but a CurlMultiHandle as $multi', function (callable $call): void {
     expect(fn () => $call(curl_init()))->toThrow(Exception::class, 'expected a CurlMultiHandle')

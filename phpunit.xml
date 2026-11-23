@@ -4,7 +4,7 @@
          bootstrap="vendor/autoload.php"
          colors="true">
     <testsuites>
-        <testsuite name="pcurl">
+        <testsuite name="multicurl">
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>

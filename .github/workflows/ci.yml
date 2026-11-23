@@ -41,23 +41,20 @@ jobs:
           echo "PKG_CONFIG_PATH=$(brew --prefix curl)/lib/pkgconfig" >> "$GITHUB_ENV"
 
       - name: Build
-        # ext/ holds the Zephir-generated sources as committed: the tree PIE and the installers build.
-        working-directory: ext
         run: |
           phpize
-          ./configure --enable-pcurl
+          ./configure --enable-multicurl
           make -j"$(nproc 2>/dev/null || sysctl -n hw.ncpu)"
 
       - name: Load
-        # pcurl requires ext-curl; -n drops the ini that enables it where PHP ships it as a shared extension.
-        working-directory: ext
+        # multicurl requires ext-curl; -n drops the ini that enables it where PHP ships it as a shared extension.
         run: |
           CURL=""; php -n -m | grep -qx curl || CURL="-d extension=curl"
-          php -n $CURL -d extension="$PWD/modules/pcurl.so" -r 'exit(extension_loaded("pcurl") ? 0 : 1);'
-          php -n $CURL -d extension="$PWD/modules/pcurl.so" --ri pcurl
+          php -n $CURL -d extension="$PWD/modules/multicurl.so" -r 'exit(extension_loaded("multicurl") ? 0 : 1);'
+          php -n $CURL -d extension="$PWD/modules/multicurl.so" --ri multicurl
 
       - name: Test
         # The ini stays on here: Pest needs the extensions setup-php enables (mbstring, dom, tokenizer, ...).
         run: |
           composer install --no-interaction --no-progress
-          php -d extension="$PWD/ext/modules/pcurl.so" vendor/bin/pest
+          php -d extension="$PWD/modules/multicurl.so" vendor/bin/pest

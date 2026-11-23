@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Pcurl\Multi;
+use Multicurl\Multi;
 
 beforeEach(function (): void {
     $this->multi = curl_multi_init();
@@ -62,7 +62,7 @@ it('returns CURLM_RECURSIVE_API_CALL, not an exception, for a multi call made in
     expect($inside)->not->toBeEmpty()->and(array_unique($inside, SORT_REGULAR))->toBe([[CURLM_RECURSIVE_API_CALL, CURLM_RECURSIVE_API_CALL]]);
 });
 
-it('surfaces an exception thrown inside it from the pcurl call that fired it', function (): void {
+it('surfaces an exception thrown inside it from the multicurl call that fired it', function (): void {
     curl_multi_add_handle($this->multi, easyFor('/socket-throw'));
     Multi::curlMultiSetopt($this->multi, CURLMOPT_SOCKETFUNCTION, function (): int {
         throw new DomainException('socket boom');

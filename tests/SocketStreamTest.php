@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Pcurl\Multi;
+use Multicurl\Multi;
 
 it('wraps a duplicate of the descriptor in a readable and writable stream', function (): void {
     [$a, $b, $fdA] = socketPairWithFds();

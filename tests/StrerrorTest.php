@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Pcurl\Multi;
+use Multicurl\Multi;
 
 it('returns libcurl\'s message for a CURLMcode', function (int $code, string $message): void {
     expect(Multi::curlMultiStrerror($code))->toBe($message);

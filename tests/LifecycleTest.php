@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Pcurl\Multi;
+use Multicurl\Multi;
 
 it('drops its state with the CurlMultiHandle: a new multi starts with no data or callbacks', function (): void {
     // Address reuse: a freed CURLM* can come back for the next curl_multi_init().

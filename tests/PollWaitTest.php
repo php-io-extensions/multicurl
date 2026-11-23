@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Pcurl\Multi;
+use Multicurl\Multi;
 
 beforeEach(function (): void {
     $this->multi = curl_multi_init();

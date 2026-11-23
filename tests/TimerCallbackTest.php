@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Pcurl\Multi;
+use Multicurl\Multi;
 
 beforeEach(function (): void {
     $this->multi = curl_multi_init();
@@ -70,7 +70,7 @@ it('passes a -1 return to libcurl, which aborts the multi', function (): void {
     expect(curl_multi_add_handle($this->multi, easyFor('/minus-one-2')))->toBe(CURLM_ABORTED_BY_CALLBACK);
 })->skip(curl_version()['version_number'] < 0x075100, 'CURLM_ABORTED_BY_CALLBACK arrived in libcurl 7.81');
 
-it('surfaces an exception thrown inside it from the pcurl call that fired it, and libcurl marks the multi aborted', function (): void {
+it('surfaces an exception thrown inside it from the multicurl call that fired it, and libcurl marks the multi aborted', function (): void {
     multiWithPendingTransfer($this->multi, '/abort');
     Multi::curlMultiSetopt($this->multi, CURLMOPT_TIMERFUNCTION, function (): int {
         throw new LogicException('timer boom');

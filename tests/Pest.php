@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use Pcurl\Multi;
+use Multicurl\Multi;
 
-if (! extension_loaded('pcurl')) {
-    throw new RuntimeException('The pcurl extension is not loaded; run pest with -d extension=/path/to/pcurl.so (ext-curl must load first)');
+if (! extension_loaded('multicurl')) {
+    throw new RuntimeException('The multicurl extension is not loaded; run pest with -d extension=/path/to/multicurl.so (ext-curl must load first)');
 }
 
 /*
- * libcurl constants pcurl leaves to its callers. ext-curl defines some CURLM_* codes already;
+ * libcurl constants multicurl leaves to its callers. ext-curl defines some CURLM_* codes already;
  * a guard keeps these valid should a later PHP add the rest.
  */
 foreach ([
