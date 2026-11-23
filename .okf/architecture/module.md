@@ -19,8 +19,8 @@ sources:
   - id: install
     resource: install-macos.sh
     title: install-macos.sh (libcurl header resolution)
-  - id: pi-link
-    resource: "scope: Pi 5, static glibc micro runtime, 2026-10-08"
+  - id: linux-link
+    resource: "scope: aarch64 Linux, static glibc micro runtime, 2026-10-08"
     title: Linked libcurl.so.4 measurement
 ---
 
@@ -66,10 +66,10 @@ A `ZEND_TLS HashTable *` registry keyed by `CURLM *` holds one `multicurl_multi_
 
 The `CURLM*` and `CURL*` handed to multicurl come from the libcurl ext-curl uses, so multicurl must call that same library. `config.m4` takes only the header flags from `pkg-config libcurl` (7.69.0 or newer: `CURLM_BAD_FUNCTION_ARGUMENT` first appears there) and links no libcurl on any OS: `curl_multi_*` resolve at load time from the libcurl the process already carries, which is the dylib Homebrew PHP links, the `.so` a distribution PHP or its `curl.so` links, or the libcurl compiled into a static micro binary.[^config]
 
-A linked copy breaks this. On macOS, linking `/usr/lib/libcurl` (what `curl-config` on `PATH` reports) next to Homebrew's puts two libcurls in one process, with multicurl calling one on the other's structs. On Linux, measured on the Pi 5 in a static glibc micro runtime: a module linked to `libcurl.so.4` carried versioned references (`curl_multi_socket_action@CURL_OPENSSL_4`) that bound to the system `.so` while the `CURLM*` came from the runtime's libcurl, and the first `curlMultiSocketAction` segfaulted. Unlinked, the references are unversioned and bind to the runtime's libcurl.[^pi-link] The headers should still match the libcurl PHP uses; `install-macos.sh` points `pkg-config` at it from `otool -L` on the PHP binary.[^install]
+A linked copy breaks this. On macOS, linking `/usr/lib/libcurl` (what `curl-config` on `PATH` reports) next to Homebrew's puts two libcurls in one process, with multicurl calling one on the other's structs. On Linux, measured on aarch64 Linux in a static glibc micro runtime: a module linked to `libcurl.so.4` carried versioned references (`curl_multi_socket_action@CURL_OPENSSL_4`) that bound to the system `.so` while the `CURLM*` came from the runtime's libcurl, and the first `curlMultiSocketAction` segfaulted. Unlinked, the references are unversioned and bind to the runtime's libcurl.[^linux-link] The headers should still match the libcurl PHP uses; `install-macos.sh` points `pkg-config` at it from `otool -L` on the PHP binary.[^install]
 
 [^c]: multicurl.c
 [^header]: php_multicurl.h
 [^config]: config.m4
 [^install]: install-macos.sh
-[^pi-link]: Linked libcurl.so.4 measurement, 2026-10-08
+[^linux-link]: Linked libcurl.so.4 measurement, 2026-10-08
